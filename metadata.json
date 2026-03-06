@@ -1,0 +1,5 @@
+{
+  "name": "Proyecto Final: React Avanzado",
+  "description": "Aplicación de clima para ciudades de México, utilizando API OpenWeatherMap.",
+  "requestFramePermissions": ["geolocation"]
+}
