@@ -8,6 +8,8 @@ import { motion } from 'motion/react';
 export default function WeatherCard({ weather, isDarkMode, favoriteCities, onToggleFavorite, getWeatherIcon, unit, convertTemp }) {
   if (!weather) return null;
 
+const hpaToMmhg = (hpa: number) => (hpa / 1.33322).toFixed(0);
+
   return (
     <div className={cn(
       "lg:col-span-2 backdrop-blur-md border rounded-[2.5rem] p-8 md:p-12 flex flex-col justify-between relative overflow-hidden",
@@ -31,34 +33,38 @@ export default function WeatherCard({ weather, isDarkMode, favoriteCities, onTog
       </div>
 
       <div className="mt-12 md:mt-16 flex flex-col items-center justify-center relative z-10">
-  {/* Contenedor horizontal para Temperatura e Icono */}
-  <div className="flex items-center gap-16">
-    {/* Temperatura grande */}
-    <span className="text-[6rem] md:text-[6rem] font-bold tracking-tighter leading-none">
-      {Math.round(weather.main.temp)}°C
-    </span>
-
-    {/* Icono con animación */}
-    <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }} className="flex flex-col items-center">
-      <div className="scale-150">
-              {getWeatherIcon(weather.weather[0].main)}
-            </div>
-            {/* Descripción debajo del icono */}
-            <p className={cn("mt-6 font-medium capitalize text-m whitespace-nowrap", isDarkMode ? "text-white/70" : "text-slate-500")}>
-              {weather.weather[0].description}
-            </p>
+        {/* Contenedor horizontal para Temperatura e Icono */}
+          <div className="flex items-center gap-16">
+        {/* Temperatura */}
+          <span className="text-[6rem] md:text-[6rem] font-bold tracking-tighter leading-none">
+            {convertTemp(weather.main.temp)}°{unit}
+          </span>
+        {/* Icono con animación */}
+          <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }} className="flex flex-col items-center">
+          <div className="scale-150">
+            {getWeatherIcon(weather.weather[0].main)}
+          </div>
+        {/* Descripción debajo del icono */}
+          <p className={cn("mt-6 font-medium capitalize text-m whitespace-nowrap", isDarkMode ? "text-white/70" : "text-slate-500")}>
+            {weather.weather[0].description}
+          </p>
           </motion.div>
+          </div>
+        <div className="flex gap-6 mt-14 text-[25px] font-medium opacity-80">
+          <span>Máx: {convertTemp(weather.main.temp_max)}°{unit}</span>
+          <span>•</span>
+          <span>Mín: {convertTemp(weather.main.temp_min)}°{unit}</span>
         </div>
       </div>
 
-      <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-3 gap-4 text-center">
+      <div className="mt-10 pt-10 border-t border-white/10 grid grid-cols-3 gap-4 text-center">
       <div>
         <p className="text-[20px] uppercase opacity-60 mb-1 font-bold tracking-wider">Sensación</p>
-        <p className="text-lg font-bold">{Math.round(weather.main.feels_like)}°</p>
+        <p className="text-xl font-bold">{Math.round(weather.main.feels_like)}<span className="text-[20px]">°</span></p>
       </div>
       <div>
         <p className="text-[20px] uppercase opacity-60 mb-1 font-bold tracking-wider">Presión</p>
-        <p className="text-lg font-bold">{weather.main.pressure} hPa</p>
+        <p className="text-lg font-bold">{hpaToMmhg(weather.main.pressure)} <span className="text-[20px]">mmHg</span></p>
       </div>
       <div>
         <p className="text-[20px] uppercase opacity-60 mb-1 font-bold tracking-wider">Visibilidad</p>
