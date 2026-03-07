@@ -2,11 +2,18 @@ import { Clock, Wind, Droplets } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
 
-export default function ForecastList({ weather, forecast, isDarkMode }: any) {
+export default function ForecastList({ weather, forecast, isDarkMode, unit, convertTemp }: any) {
   // Verificación de seguridad: si no hay datos, no renderizamos nada o mostramos un aviso
+  
   if (!weather || !forecast || !forecast.list) {
-    return <div className="text-center p-4 opacity-50">No hay pronóstico disponible.</div>;
+    return <div className="text-center p-4 opacity-50">No hay pronóstico disponible.</div>;   
   }
+
+  {forecast.list.slice(0, 5).map((item, idx) => (
+    <span key={idx} className="font-bold text-lg">
+      {convertTemp(item.main.temp)}°{unit}
+    </span>
+  ))}
 
   return (
     <div className="flex flex-col gap-6">
@@ -32,9 +39,9 @@ export default function ForecastList({ weather, forecast, isDarkMode }: any) {
           {forecast.list.slice(0, 5).map((item: any, idx: number) => (
             <div key={idx} className="flex items-center justify-between p-3 rounded-2xl">
               <span className="text-sm font-medium">{format(new Date(item.dt * 1000), 'HH:mm')}</span>
+              <span key={idx}className="font-bold text-lg"> {convertTemp(item.main.temp)}°{unit}</span>
               <div className="flex items-center gap-3">
                 <img src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`} className="w-8 h-8" />
-                <span className="font-bold text-lg">{Math.round(item.main.temp)}°</span>
               </div>
             </div>
           ))}

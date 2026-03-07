@@ -24,10 +24,17 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [unit, setUnit] = useState<'C' | 'F'>('C');
   const [favoriteCities, setFavoriteCities] = useState<string[]>(() => {
     const saved = localStorage.getItem('favorite_cities');
     return saved ? JSON.parse(saved) : MEXICAN_CITIES.slice(0, 6).map(c => c.name);
   });
+
+  const toggleUnit = () => setUnit(prev => (prev === 'C' ? 'F' : 'C'));
+  
+  const convertTemp = (temp: number) => {
+    return unit === 'C' ? Math.round(temp) : Math.round((temp * 9) / 5 + 32);
+  };
 
   useEffect(() => {
     localStorage.setItem('favorite_cities', JSON.stringify(favoriteCities));
@@ -148,7 +155,6 @@ export default function App() {
   )}>
     
     {loading ? (
-      /* Pantalla de carga completa: oculta absolutamente todo */
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-inherit">
         <RefreshCw className={cn("w-12 h-12 animate-spin", isDarkMode ? "text-white/50" : "text-slate-400")} />
         <p className={cn("text-xl font-medium", isDarkMode ? "text-white/50" : "text-slate-400")}>
@@ -156,9 +162,19 @@ export default function App() {
         </p>
       </div>
     ) : (
-      /* Interfaz principal: solo se muestra cuando NO está cargando */
       <>
-        <div className="w-full max-w-4xl flex justify-end mb-4">
+        <div className="w-full max-w-4xl flex justify-end gap-2 mb-4">
+          <button
+            onClick={toggleUnit}
+            className={cn(
+              "p-3 rounded-2xl backdrop-blur-md border transition-all font-bold",
+              isDarkMode 
+                ? "bg-white/10 border-white/20 hover:bg-white/20 text-white" 
+                : "bg-white/40 border-black/10 hover:bg-white/60 text-slate-900 shadow-sm"
+            )}
+          >
+            °{unit}
+          </button>
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
             className={cn(
@@ -206,11 +222,15 @@ export default function App() {
               favoriteCities={favoriteCities}
               onToggleFavorite={toggleFavorite}
               getWeatherIcon={getWeatherIcon}
+              unit={unit}
+              convertTemp={convertTemp}
             />
             <ForecastList 
               weather={weather} 
               forecast={forecast} 
-              isDarkMode={isDarkMode} 
+              isDarkMode={isDarkMode}
+              unit={unit}
+              convertTemp={convertTemp}
             />
           </motion.div>
         )}

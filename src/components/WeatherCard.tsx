@@ -4,7 +4,7 @@ import { es } from 'date-fns/locale';
 import { cn } from '../lib/utils';
 
 
-export default function WeatherCard({ weather, isDarkMode, favoriteCities, onToggleFavorite, getWeatherIcon }) {
+export default function WeatherCard({ weather, isDarkMode, favoriteCities, onToggleFavorite, getWeatherIcon, unit, convertTemp }) {
   if (!weather) return null;
 
   return (
@@ -37,8 +37,14 @@ export default function WeatherCard({ weather, isDarkMode, favoriteCities, onTog
       </div>
 
       <div className="mt-12 md:mt-24 relative z-10">
-        <span className="text-8xl md:text-[10rem] font-bold tracking-tighter">{Math.round(weather.main.temp)}°C</span>
+        <span className="text-6xl font-bold">
+      {convertTemp(weather.main.temp)}°{unit}
+      </span>
       </div>
+
+      
+
     </div>
+
   );
 }
