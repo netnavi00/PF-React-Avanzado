@@ -10,8 +10,7 @@ export default function ErrorMessage({ error, onRetry, isDarkMode }) {
       className={cn(
         "backdrop-blur-md border p-8 rounded-[2.5rem] flex flex-col items-center gap-6 max-w-md text-center",
         isDarkMode ? "bg-white/10 border-white/20" : "bg-white/40 border-black/10 shadow-xl"
-      )}
-    >
+      )}>
       {error === 'MISSING_KEY' ? (
         <>
           <div className="p-4 bg-yellow-500/20 rounded-full">
