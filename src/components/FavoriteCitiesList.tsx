@@ -2,7 +2,7 @@ import { Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 
-export default function FavoriteCitiesList({ favoriteCities, city, onSelectCity, onToggleFavorite, isDarkMode }) {
+export default function FavoriteCitiesList({ favoriteCities, city, onSelectCity, onToggleFavorite, isDarkMode }: any) {
   return (
     <div className="mt-12 w-full max-w-4xl">
       <div className="flex items-center gap-2 mb-4 px-4">
@@ -45,12 +45,6 @@ export default function FavoriteCitiesList({ favoriteCities, city, onSelectCity,
             </motion.div>
           ))}
         </AnimatePresence>
-        
-        {favoriteCities.length === 0 && (
-          <p className={cn("text-sm italic px-2", isDarkMode ? "text-white/30" : "text-slate-400")}>
-            Busca una ciudad y haz clic en el corazón para añadirla aquí.
-          </p>
-        )}
       </div>
     </div>
   );

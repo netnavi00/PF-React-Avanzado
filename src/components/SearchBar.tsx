@@ -2,6 +2,8 @@ import { Search, Navigation, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 
+
+
 export default function SearchBar({ 
   searchQuery, 
   setSearchQuery, 

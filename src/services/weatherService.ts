@@ -1,6 +1,6 @@
 import { WeatherData, ForecastData } from '../types';
 
-const API_KEY = "LLAVE aQUI";
+const API_KEY = "f0d31ab118ad9dbfe0d08c5c689ea5c2";
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 export const weatherService = {
